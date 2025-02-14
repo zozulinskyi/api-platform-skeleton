@@ -22,9 +22,6 @@ final class CodeRepository extends ServiceEntityRepository
     public function generate(string $login): Code
     {
         $code = ByteString::fromRandom(length: 6, alphabet: '1234567890')->toString();
-        $expiredAt = Carbon::now()->addMinutes(value: 10)->toDateTimeImmutable();
-        $hashedCode = password_hash(password: $code, algo: PASSWORD_BCRYPT);
-
         $entity = $this->findOneBy(['login' => $login]);
 
         if (is_null($entity)) {
@@ -34,8 +31,8 @@ final class CodeRepository extends ServiceEntityRepository
         }
 
         $entity->setCode(code: $code);
-        $entity->setHash(hash: $hashedCode);
-        $entity->setExpiredAt(expiredAt: $expiredAt);
+        $entity->setHash(hash: password_hash(password: $code, algo: PASSWORD_BCRYPT));
+        $entity->setExpiredAt(expiredAt: Carbon::now()->addMinutes(value: 10));
 
         $this->getEntityManager()->flush();
 

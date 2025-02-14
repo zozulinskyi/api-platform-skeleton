@@ -8,7 +8,9 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
 use App\ApiResource\Authentication\Email\Input\GenerateCodeInput;
 use App\ApiResource\Authentication\Email\Input\ValidateCodeInput;
+use App\ApiResource\Authentication\Email\Output\ValidateCodeOutput;
 use App\ApiResource\Authentication\Email\Processor\GenerateCodeProcessor;
+use App\ApiResource\Authentication\Email\Processor\ValidateCodeProcessor;
 use Symfony\Component\HttpFoundation\Response;
 
 #[ApiResource(
@@ -35,6 +37,8 @@ use Symfony\Component\HttpFoundation\Response;
                 security: [],
             ),
             input: ValidateCodeInput::class,
+            output: ValidateCodeOutput::class,
+            processor: ValidateCodeProcessor::class,
         ),
     ],
     routePrefix: '/v1/auth/email/otp',

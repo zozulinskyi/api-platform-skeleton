@@ -6,7 +6,8 @@ namespace App\Entity\Authentication;
 use App\Entity\Traits\WithCreatedAt;
 use App\Entity\Traits\WithUuid;
 use App\Repository\Authentication\CodeRepository;
-use DateTimeImmutable;
+use Carbon\CarbonInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'codes', schema: 'authentication')]
@@ -24,8 +25,8 @@ class Code
     #[ORM\Column(length: 128)]
     private ?string $hash = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $expiredAt = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?CarbonInterface $expiredAt = null;
 
 
     public function getCode(): ?string
@@ -61,12 +62,12 @@ class Code
         return $this;
     }
 
-    public function getExpiredAt(): ?DateTimeImmutable
+    public function getExpiredAt(): ?CarbonInterface
     {
         return $this->expiredAt;
     }
 
-    public function setExpiredAt(DateTimeImmutable $expiredAt): static
+    public function setExpiredAt(CarbonInterface $expiredAt): static
     {
         $this->expiredAt = $expiredAt;
         return $this;

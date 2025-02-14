@@ -3,23 +3,24 @@ declare(strict_types=1);
 
 namespace App\Entity\Traits;
 
-use DateTimeImmutable;
-use DateTimeInterface;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 trait WithUpdatedAt
 {
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Groups(['with:updatedAt', 'with:timestamps'])]
-    protected DateTimeInterface $updatedAt;
+    protected CarbonInterface $updatedAt;
 
-    public function getUpdatedAt(): DateTimeInterface
+    public function getUpdatedAt(): CarbonInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTimeInterface $updatedAt): static
+    public function setUpdatedAt(CarbonInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
         return $this;
@@ -28,6 +29,6 @@ trait WithUpdatedAt
     #[ORM\PreUpdate, ORM\PrePersist]
     public function touchUpdatedAt(): void
     {
-        $this->setUpdatedAt(new DateTimeImmutable());
+        $this->setUpdatedAt(Carbon::now());
     }
 }
