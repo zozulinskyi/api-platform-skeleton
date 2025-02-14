@@ -1,0 +1,18 @@
+api_platform:
+  title: API Platform
+  version: 1.0.0
+  swagger:
+    api_keys:
+      JWT:
+        name: Authorization
+        type: header
+  formats:
+    json: ['application/json']
+  mercure:
+    enabled: false
+    include_type: true
+  defaults:
+    stateless: true
+    cache_headers:
+      vary: ['Content-Type', 'Authorization', 'Origin']
+  path_segment_name_generator: api_platform.metadata.path_segment_name_generator.dash

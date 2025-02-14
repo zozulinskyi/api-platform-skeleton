@@ -1,0 +1,8 @@
+framework:
+  mailer:
+    dsn: '%env(MAILER_DSN)%'
+    headers:
+      from: 'MailService <info@example.com>'
+    envelope:
+      sender: 'info@example.com'
+    message_bus: false

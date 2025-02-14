@@ -1,0 +1,74 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Entity\Authentication;
+
+use App\Entity\Traits\WithCreatedAt;
+use App\Entity\Traits\WithUuid;
+use App\Repository\Authentication\CodeRepository;
+use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Table(name: 'codes', schema: 'authentication')]
+#[ORM\Entity(repositoryClass: CodeRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+class Code
+{
+    use WithUuid, WithCreatedAt;
+
+    private ?string $code = null;
+
+    #[ORM\Column(length: 128, unique: true)]
+    private ?string $login = null;
+
+    #[ORM\Column(length: 128)]
+    private ?string $hash = null;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $expiredAt = null;
+
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): static
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(string $login): static
+    {
+        $this->login = $login;
+        return $this;
+    }
+
+    public function getHash(): ?string
+    {
+        return $this->hash;
+    }
+
+    public function setHash(string $hash): static
+    {
+        $this->hash = $hash;
+        return $this;
+    }
+
+    public function getExpiredAt(): ?DateTimeImmutable
+    {
+        return $this->expiredAt;
+    }
+
+    public function setExpiredAt(DateTimeImmutable $expiredAt): static
+    {
+        $this->expiredAt = $expiredAt;
+        return $this;
+    }
+}
