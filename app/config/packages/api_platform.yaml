@@ -8,9 +8,6 @@ api_platform:
         type: header
   formats:
     json: ['application/json']
-  mercure:
-    enabled: false
-    include_type: true
   defaults:
     stateless: true
     cache_headers:
