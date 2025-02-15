@@ -36,7 +36,10 @@ final readonly class ValidateCodeProcessor implements ProcessorInterface
         }
 
         $user = $this->userRepository->findOrCreate(email: $data->email);
+        $token = $this->JWTTokenManager->create(user: $user);
 
-        return new ValidateCodeOutput(token: $this->JWTTokenManager->create(user: $user));
+        $this->codeRepository->clearByLogin(login: $data->email);
+
+        return new ValidateCodeOutput(token: $token);
     }
 }

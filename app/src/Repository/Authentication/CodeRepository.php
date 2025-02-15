@@ -38,4 +38,14 @@ final class CodeRepository extends ServiceEntityRepository
 
         return $entity;
     }
+
+    public function clearByLogin(string $login): void
+    {
+        $this->createQueryBuilder(alias: 'c')
+            ->delete()
+            ->where(predicates: 'c.login = :login')
+            ->setParameter(key: 'login', value: $login)
+            ->getQuery()
+            ->execute();
+    }
 }
