@@ -12,4 +12,6 @@ api_platform:
     stateless: true
     cache_headers:
       vary: ['Content-Type', 'Authorization', 'Origin']
+    normalization_context:
+      skip_null_values: false
   path_segment_name_generator: api_platform.metadata.path_segment_name_generator.dash

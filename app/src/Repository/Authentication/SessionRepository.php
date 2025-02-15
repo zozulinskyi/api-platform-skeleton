@@ -38,9 +38,9 @@ final class SessionRepository extends ServiceEntityRepository
     {
         $this->createQueryBuilder(alias: 's')
             ->update()
-            ->set(key: 'lastAccessAt', value: ':lastAccessAt')
-            ->set(key: 'userAgent', value: ':userAgent')
-            ->set(key: 'ip', value: ':ip')
+            ->set(key: 's.lastAccessAt', value: ':lastAccessAt')
+            ->set(key: 's.userAgent', value: ':userAgent')
+            ->set(key: 's.ip', value: ':ip')
             ->where(predicates: 's.id = :sessionId')
             ->setParameter(key: 'sessionId', value: $sessionId)
             ->setParameter(key: 'lastAccessAt', value: Carbon::now())
