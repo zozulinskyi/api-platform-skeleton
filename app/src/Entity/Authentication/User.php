@@ -22,9 +22,6 @@ class User implements UserInterface
     #[ORM\Column(length: 128, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 64, unique: true, nullable: true)]
-    private ?string $phone = null;
-
     /**
      * @var list<string> The user roles
      */
@@ -51,17 +48,6 @@ class User implements UserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): static
-    {
-        $this->phone = $phone;
         return $this;
     }
 

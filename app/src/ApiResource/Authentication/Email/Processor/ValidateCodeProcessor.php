@@ -8,6 +8,8 @@ use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\Authentication\Email\Input\ValidateCodeInput;
 use App\ApiResource\Authentication\Email\Output\ValidateCodeOutput;
 use App\Repository\Authentication\CodeRepository;
+use App\Repository\Authentication\UserRepository;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -16,7 +18,9 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 final readonly class ValidateCodeProcessor implements ProcessorInterface
 {
     public function __construct(
+        private UserRepository $userRepository,
         private CodeRepository $codeRepository,
+        private JWTTokenManagerInterface $JWTTokenManager,
     )
     {}
 
@@ -31,8 +35,8 @@ final readonly class ValidateCodeProcessor implements ProcessorInterface
             throw new AccessDeniedHttpException(message: 'Your code was expired');
         }
 
-        // todo: implement logic for generate access token here...
+        $user = $this->userRepository->findOrCreate(email: $data->email);
 
-        return new ValidateCodeOutput(token: '123');
+        return new ValidateCodeOutput(token: $this->JWTTokenManager->create(user: $user));
     }
 }
