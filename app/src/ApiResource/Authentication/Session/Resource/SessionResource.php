@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\OpenApi\Model;
 use App\ApiResource\Authentication\Session\Output\SessionOutput;
 use App\Entity\Authentication\Session;
-use App\State\Common\Provider\EntityToDtoStateProvider;
 
 #[ApiResource(
     shortName: 'Authentication/Session',
@@ -21,7 +20,6 @@ use App\State\Common\Provider\EntityToDtoStateProvider;
                 description: 'Method return all session for current user for monitoring or revoke a session',
             ),
             output: SessionOutput::class,
-            provider: EntityToDtoStateProvider::class,
             stateOptions: new Options(entityClass: Session::class),
         ),
     ],
