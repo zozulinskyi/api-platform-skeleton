@@ -1,0 +1,8 @@
+automapper:
+  normalizer:
+    enabled: true
+    only_registered_mapping: true
+  mapping:
+    paths:
+      - "%kernel.project_dir%/src/Entity"
+      - "%kernel.project_dir%/src/ApiResource"
