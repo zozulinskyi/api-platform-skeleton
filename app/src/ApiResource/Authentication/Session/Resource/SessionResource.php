@@ -5,6 +5,7 @@ namespace App\ApiResource\Authentication\Session\Resource;
 
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\OpenApi\Model;
 use App\ApiResource\Authentication\Session\Output\SessionOutput;
@@ -13,6 +14,15 @@ use App\Entity\Authentication\Session;
 #[ApiResource(
     shortName: 'Authentication/Session',
     operations: [
+        new Delete(
+            uriTemplate: '/sessions/{id}',
+            openapi: new Model\Operation(
+                summary: 'Remove user session by ID',
+                description: 'Method allow to remove user session by ID',
+            ),
+            security: "is_granted('SESSION_DELETE', object)",
+            stateOptions: new Options(entityClass: Session::class),
+        ),
         new GetCollection(
             uriTemplate: '/sessions',
             openapi: new Model\Operation(
