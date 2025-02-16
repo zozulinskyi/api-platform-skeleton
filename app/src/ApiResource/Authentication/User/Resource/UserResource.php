@@ -10,7 +10,7 @@ use App\ApiResource\Authentication\User\Output\UserOutput;
 use App\ApiResource\Authentication\User\Provider\GetCurrentUserProvider;
 
 #[ApiResource(
-    shortName: 'Authentication',
+    shortName: 'Authentication/User',
     operations: [
         new Get(
             uriTemplate: '/user',
