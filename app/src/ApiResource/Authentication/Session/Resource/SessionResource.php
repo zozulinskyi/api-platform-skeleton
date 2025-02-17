@@ -13,7 +13,7 @@ use App\ApiResource\Authentication\Session\Provider\SessionListProvider;
 use App\Entity\Authentication\Session;
 
 #[ApiResource(
-    shortName: 'Authentication/Session',
+    shortName: 'Session',
     operations: [
         new Delete(
             uriTemplate: '/sessions/{id}',

@@ -14,7 +14,7 @@ use App\ApiResource\Authentication\Email\Processor\ValidateCodeProcessor;
 use Symfony\Component\HttpFoundation\Response;
 
 #[ApiResource(
-    shortName: 'Authentication/Login',
+    shortName: 'Authentication',
     operations: [
         new Post(
             uriTemplate: '/generate',

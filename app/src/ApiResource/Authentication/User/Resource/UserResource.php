@@ -10,10 +10,10 @@ use App\ApiResource\Authentication\User\Output\UserOutput;
 use App\ApiResource\Authentication\User\Provider\GetCurrentUserProvider;
 
 #[ApiResource(
-    shortName: 'Authentication/User',
+    shortName: 'Authentication',
     operations: [
         new Get(
-            uriTemplate: '/user',
+            uriTemplate: '/me',
             openapi: new Model\Operation(
                 summary: 'Receive information about current user',
                 description: 'This method return current user object, also you can verify JWT token',
