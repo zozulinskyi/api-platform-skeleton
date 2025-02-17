@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\OpenApi\Model;
 use App\ApiResource\Authentication\Session\Output\SessionOutput;
+use App\ApiResource\Authentication\Session\Provider\SessionListProvider;
 use App\Entity\Authentication\Session;
 
 #[ApiResource(
@@ -30,6 +31,7 @@ use App\Entity\Authentication\Session;
                 description: 'Method return all session for current user for monitoring or revoke a session',
             ),
             output: SessionOutput::class,
+            provider: SessionListProvider::class,
             stateOptions: new Options(entityClass: Session::class),
         ),
     ],

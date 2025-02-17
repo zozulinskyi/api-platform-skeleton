@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[AsEventListener(event: Events::JWT_AUTHENTICATED, method: 'onJwtAuthenticated')]
 final readonly class JwtTokenListener
 {
-    private const string SESSION_KEY = 'sessionId';
+    public const string SESSION_KEY = 'sessionId';
 
     public function __construct(
         private RequestStack $requestStack,

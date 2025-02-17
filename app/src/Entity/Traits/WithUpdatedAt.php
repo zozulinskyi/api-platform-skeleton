@@ -7,12 +7,10 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
 
 trait WithUpdatedAt
 {
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups(['with:updatedAt', 'with:timestamps'])]
     protected CarbonInterface $updatedAt;
 
     public function getUpdatedAt(): CarbonInterface
