@@ -5,29 +5,23 @@ namespace App\ApiResource\Authentication\User\Provider;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\ApiResource\Authentication\User\Output\UserOutput;
-use App\Entity\Authentication\User;
+use App\ApiResource\Authentication\User\Output\CurrentUserOutput;
+use AutoMapper\AutoMapperInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
 /**
- * @implements ProviderInterface<UserOutput>
+ * @implements ProviderInterface<CurrentUserOutput>
  */
 final readonly class GetCurrentUserProvider implements ProviderInterface
 {
     public function __construct(
         private Security $security,
+        private AutoMapperInterface $mapper,
     )
     {}
 
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): UserOutput
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): object
     {
-        /** @var User $user **/
-        $user = $this->security->getUser();
-
-        return new UserOutput(
-            id: $user->getId()->toString(),
-            email: $user->getEmail(),
-            name: $user->getName(),
-        );
+        return $this->mapper->map(source: $this->security->getUser(), target: CurrentUserOutput::class);
     }
 }

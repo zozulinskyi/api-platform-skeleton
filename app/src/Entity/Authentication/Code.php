@@ -17,8 +17,6 @@ class Code
 {
     use WithUuid, WithCreatedAt;
 
-    private ?string $code = null;
-
     #[ORM\Column(length: 128, unique: true)]
     private ?string $login = null;
 
@@ -28,17 +26,6 @@ class Code
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?CarbonInterface $expiredAt = null;
 
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(?string $code): static
-    {
-        $this->code = $code;
-        return $this;
-    }
 
     public function getLogin(): ?string
     {

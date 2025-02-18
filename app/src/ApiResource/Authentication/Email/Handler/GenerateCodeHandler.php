@@ -5,6 +5,7 @@ namespace App\ApiResource\Authentication\Email\Handler;
 
 use App\ApiResource\Authentication\Email\Input\GenerateCodeInput;
 use App\Repository\Authentication\CodeRepository;
+use App\Services\Authentication\CodeGeneratorService;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Email;
@@ -15,15 +16,18 @@ final readonly class GenerateCodeHandler
     public function __construct(
         private CodeRepository $repository,
         private MailerInterface $mailer,
+        private CodeGeneratorService $codeGeneratorService,
     )
     {}
 
     public function __invoke(GenerateCodeInput $input): void
     {
-        $codeEntity = $this->repository->generate(login: $input->email);
+        [$code, $hash] = $this->codeGeneratorService->generateRandomCodeWithHash();
+        $codeEntity = $this->repository->generate(login: $input->email, hash: $hash);
+
         $email = (new Email())
-            ->to($input->email)
-            ->text(body: sprintf('Your authorization code is: %s', $codeEntity->getCode()))
+            ->to($codeEntity->getLogin())
+            ->text(body: sprintf('Your authorization code is: %s', $code))
             ->subject(subject: 'Your authorization code.');
 
         $this->mailer->send(message: $email);
