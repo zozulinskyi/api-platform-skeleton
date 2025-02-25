@@ -12,6 +12,7 @@ use App\ApiResource\Authentication\User\Input\ConfirmEmailInput;
 use App\ApiResource\Authentication\User\Output\ChangeEmailOutput;
 use App\ApiResource\Authentication\User\Output\CurrentUserOutput;
 use App\ApiResource\Authentication\User\Processor\ChangeEmailProcessor;
+use App\ApiResource\Authentication\User\Processor\ConfirmEmailProcessor;
 use App\ApiResource\Authentication\User\Provider\GetCurrentUserProvider;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -51,6 +52,7 @@ use Symfony\Component\HttpFoundation\Response;
             ),
             input: ConfirmEmailInput::class,
             output: false,
+            processor: ConfirmEmailProcessor::class,
         ),
     ],
     routePrefix: '/v1/user',
