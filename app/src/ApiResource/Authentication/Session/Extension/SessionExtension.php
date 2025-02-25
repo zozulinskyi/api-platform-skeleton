@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Doctrine\Extension\Authentication;
+namespace App\ApiResource\Authentication\Session\Extension;
 
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;

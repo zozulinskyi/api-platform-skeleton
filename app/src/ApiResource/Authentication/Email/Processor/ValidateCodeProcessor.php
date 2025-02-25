@@ -9,6 +9,7 @@ use App\ApiResource\Authentication\Email\Input\ValidateCodeInput;
 use App\ApiResource\Authentication\Email\Output\ValidateCodeOutput;
 use App\Repository\Authentication\CodeRepository;
 use App\Repository\Authentication\UserRepository;
+use App\Services\Authentication\CodeGeneratorService;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -20,6 +21,7 @@ final readonly class ValidateCodeProcessor implements ProcessorInterface
     public function __construct(
         private UserRepository $userRepository,
         private CodeRepository $codeRepository,
+        private CodeGeneratorService $codeGeneratorService,
         private JWTTokenManagerInterface $JWTTokenManager,
     )
     {}
@@ -28,7 +30,7 @@ final readonly class ValidateCodeProcessor implements ProcessorInterface
     {
         $codeEntity = $this->codeRepository->findOneBy(['login' => $data->email]);
 
-        if (is_null($codeEntity) || !password_verify(password: $data->code, hash: $codeEntity->getHash())) {
+        if (is_null($codeEntity) || !$this->codeGeneratorService->isValid(code: $data->code, hash: $codeEntity->getSecretCode())) {
             throw new AccessDeniedHttpException(message: 'Incorrect code');
         }
         if ($codeEntity->getExpiredAt()->lessThan(date: 'now')) {

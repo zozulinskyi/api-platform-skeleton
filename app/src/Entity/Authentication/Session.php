@@ -22,7 +22,7 @@ class Session
     private ?User $user;
 
     #[ORM\Column(length: 255)]
-    private ?string $ip = null;
+    private ?string $ipAddress = null;
 
     #[ORM\Column(length: 255)]
     private ?string $userAgent = null;
@@ -30,17 +30,6 @@ class Session
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?CarbonInterface $lastAccessAt = null;
 
-
-    public function getIp(): ?string
-    {
-        return $this->ip;
-    }
-
-    public function setIp(string $ip): static
-    {
-        $this->ip = $ip;
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -50,6 +39,17 @@ class Session
     public function setUser(?User $user): static
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getIpAddress(): ?string
+    {
+        return $this->ipAddress;
+    }
+
+    public function setIpAddress(?string $ipAddress): static
+    {
+        $this->ipAddress = $ipAddress;
         return $this;
     }
 

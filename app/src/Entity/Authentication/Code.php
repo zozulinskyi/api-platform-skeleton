@@ -17,28 +17,15 @@ class Code
 {
     use WithUuid, WithCreatedAt;
 
-    private ?string $code = null;
-
     #[ORM\Column(length: 128, unique: true)]
     private ?string $login = null;
 
     #[ORM\Column(length: 128)]
-    private ?string $hash = null;
+    private ?string $secretCode = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?CarbonInterface $expiredAt = null;
 
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(?string $code): static
-    {
-        $this->code = $code;
-        return $this;
-    }
 
     public function getLogin(): ?string
     {
@@ -51,14 +38,14 @@ class Code
         return $this;
     }
 
-    public function getHash(): ?string
+    public function getSecretCode(): ?string
     {
-        return $this->hash;
+        return $this->secretCode;
     }
 
-    public function setHash(string $hash): static
+    public function setSecretCode(?string $secretCode): static
     {
-        $this->hash = $hash;
+        $this->secretCode = $secretCode;
         return $this;
     }
 
