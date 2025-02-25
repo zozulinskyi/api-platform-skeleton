@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250215165602 extends AbstractMigration
+final class Version20250225183322 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20250215165602 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE authentication.codes (id UUID NOT NULL, login VARCHAR(128) NOT NULL, hash VARCHAR(128) NOT NULL, expired_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE authentication.codes (id UUID NOT NULL, login VARCHAR(128) NOT NULL, secret_code VARCHAR(128) NOT NULL, expired_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_CFA8F4CFAA08CB10 ON authentication.codes (login)');
         $this->addSql('COMMENT ON COLUMN authentication.codes.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN authentication.codes.expired_at IS \'(DC2Type:datetime_immutable)\'');

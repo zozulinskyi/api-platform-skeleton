@@ -21,7 +21,7 @@ class Code
     private ?string $login = null;
 
     #[ORM\Column(length: 128)]
-    private ?string $hash = null;
+    private ?string $secretCode = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?CarbonInterface $expiredAt = null;
@@ -38,14 +38,14 @@ class Code
         return $this;
     }
 
-    public function getHash(): ?string
+    public function getSecretCode(): ?string
     {
-        return $this->hash;
+        return $this->secretCode;
     }
 
-    public function setHash(string $hash): static
+    public function setSecretCode(?string $secretCode): static
     {
-        $this->hash = $hash;
+        $this->secretCode = $secretCode;
         return $this;
     }
 

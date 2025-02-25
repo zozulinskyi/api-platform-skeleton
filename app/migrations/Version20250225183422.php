@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250218193439 extends AbstractMigration
+final class Version20250225183422 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20250218193439 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE authentication.change_email_requests (id UUID NOT NULL, user_id UUID NOT NULL, status VARCHAR(255) NOT NULL, old_email VARCHAR(255) NOT NULL, new_email VARCHAR(255) NOT NULL, old_email_hash VARCHAR(128) NOT NULL, new_email_hash VARCHAR(128) NOT NULL, expired_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE authentication.change_email_requests (id UUID NOT NULL, user_id UUID NOT NULL, status VARCHAR(255) NOT NULL, old_email VARCHAR(255) NOT NULL, new_email VARCHAR(255) NOT NULL, old_email_secret_code VARCHAR(128) NOT NULL, new_email_secret_code VARCHAR(128) NOT NULL, expired_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_EBBDB184A76ED395 ON authentication.change_email_requests (user_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_CHANGE_EMAIL_REQUEST ON authentication.change_email_requests (user_id, old_email, new_email)');
         $this->addSql('COMMENT ON COLUMN authentication.change_email_requests.id IS \'(DC2Type:uuid)\'');

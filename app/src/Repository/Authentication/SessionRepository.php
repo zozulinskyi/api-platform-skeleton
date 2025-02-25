@@ -23,8 +23,8 @@ final class SessionRepository extends ServiceEntityRepository
     public function generate(User $user, Request $request): Session
     {
         $session = (new Session())
-            ->setIp(ip: $request->getClientIp())
             ->setUser(user: $user)
+            ->setIpAddress(ipAddress: $request->getClientIp())
             ->setUserAgent(userAgent: $request->headers->get(key: 'User-Agent', default: 'undefined'))
             ->setLastAccessAt(lastAccessAt: Carbon::now());
 
@@ -40,12 +40,12 @@ final class SessionRepository extends ServiceEntityRepository
             ->update()
             ->set(key: 's.lastAccessAt', value: ':lastAccessAt')
             ->set(key: 's.userAgent', value: ':userAgent')
-            ->set(key: 's.ip', value: ':ip')
+            ->set(key: 's.ipAddress', value: ':ipAddress')
             ->where(predicates: 's.id = :sessionId')
             ->setParameter(key: 'sessionId', value: $sessionId)
             ->setParameter(key: 'lastAccessAt', value: Carbon::now())
             ->setParameter(key: 'userAgent', value: $request->headers->get(key: 'User-Agent', default: 'undefined'))
-            ->setParameter(key: 'ip', value: $request->getClientIp())
+            ->setParameter(key: 'ipAddress', value: $request->getClientIp())
             ->getQuery()
             ->execute();
     }

@@ -30,7 +30,7 @@ final readonly class ValidateCodeProcessor implements ProcessorInterface
     {
         $codeEntity = $this->codeRepository->findOneBy(['login' => $data->email]);
 
-        if (is_null($codeEntity) || !$this->codeGeneratorService->isValid(code: $data->code, hash: $codeEntity->getHash())) {
+        if (is_null($codeEntity) || !$this->codeGeneratorService->isValid(code: $data->code, hash: $codeEntity->getSecretCode())) {
             throw new AccessDeniedHttpException(message: 'Incorrect code');
         }
         if ($codeEntity->getExpiredAt()->lessThan(date: 'now')) {

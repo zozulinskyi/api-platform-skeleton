@@ -18,7 +18,7 @@ final class CodeRepository extends ServiceEntityRepository
         parent::__construct($registry, Code::class);
     }
 
-    public function generate(string $login, string $hash): Code
+    public function generate(string $login, string $secretCode): Code
     {
         $entity = $this->findOneBy(['login' => $login]);
 
@@ -28,8 +28,8 @@ final class CodeRepository extends ServiceEntityRepository
             $this->getEntityManager()->persist($entity);
         }
 
-        $entity->setHash(hash: $hash);
         $entity->setExpiredAt(expiredAt: Carbon::now()->addMinutes(value: 10));
+        $entity->setSecretCode(secretCode: $secretCode);
 
         $this->getEntityManager()->flush();
 

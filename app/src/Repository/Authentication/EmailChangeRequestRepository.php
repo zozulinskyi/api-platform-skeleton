@@ -5,6 +5,7 @@ namespace App\Repository\Authentication;
 
 use App\Entity\Authentication\EmailChangeRequest;
 use App\Entity\Authentication\User;
+use App\Entity\Enum\EmailChangeRequestStatus;
 use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,7 +20,7 @@ final class EmailChangeRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailChangeRequest::class);
     }
 
-    public function generate(User $user, string $newEmail, string $oldEmailHash, string $newEmailHash): EmailChangeRequest
+    public function generate(User $user, string $newEmail, string $oldEmailSecretCode, string $newEmailSecretCode): EmailChangeRequest
     {
         $entity = $this->findOneBy(['user' => $user, 'oldEmail' => $user->getEmail(), 'newEmail' => $newEmail]);
 
@@ -32,10 +33,10 @@ final class EmailChangeRequestRepository extends ServiceEntityRepository
             $this->getEntityManager()->persist($entity);
         }
 
-        $entity->setStatus(EmailChangeRequest::STATUS_PENDING);
-        $entity->setExpiredAt(Carbon::now()->addDay());
-        $entity->setOldEmailHash($oldEmailHash);
-        $entity->setNewEmailHash($newEmailHash);
+        $entity->setStatus(status: EmailChangeRequestStatus::PENDING);
+        $entity->setExpiredAt(expiredAt: Carbon::now()->addDay());
+        $entity->setOldEmailSecretCode(oldEmailSecretCode: $oldEmailSecretCode);
+        $entity->setNewEmailSecretCode(newEmailSecretCode: $newEmailSecretCode);
 
         $this->getEntityManager()->flush();
 

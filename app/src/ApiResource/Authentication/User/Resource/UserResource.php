@@ -39,11 +39,11 @@ use Symfony\Component\HttpFoundation\Response;
         ),
         new Post(
             uriTemplate: '/email/confirm',
-            status: Response::HTTP_ACCEPTED,
+            status: Response::HTTP_OK,
             openapi: new Model\Operation(
                 responses: [
-                    Response::HTTP_ACCEPTED => new Model\Response(
-                        description: 'Accepted',
+                    Response::HTTP_OK => new Model\Response(
+                        description: 'OK',
                     ),
                 ],
                 summary: 'Confirm change a current user email',

@@ -51,8 +51,8 @@ final readonly class ChangeEmailProcessor implements ProcessorInterface
         $changeEmailRequest = $this->emailChangeRequestRepository->generate(
             user: $user,
             newEmail: $data->newEmail,
-            oldEmailHash: $oldEmailHash,
-            newEmailHash: $newEmailHash,
+            oldEmailSecretCode: $oldEmailHash,
+            newEmailSecretCode: $newEmailHash,
         );
 
         // generate and send emails

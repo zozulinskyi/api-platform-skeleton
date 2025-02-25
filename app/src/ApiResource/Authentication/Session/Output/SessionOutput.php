@@ -18,7 +18,7 @@ final class SessionOutput
     #[Assert\NotNull, Assert\Uuid]
     public string $id;
 
-    #[MapFrom(property: 'ip')]
+    #[MapFrom(property: 'ipAddress')]
     #[Assert\NotNull, Assert\Ip]
     public string $ipAddress;
 

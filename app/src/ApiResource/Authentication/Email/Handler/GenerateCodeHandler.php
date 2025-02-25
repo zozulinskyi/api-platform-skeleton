@@ -23,7 +23,7 @@ final readonly class GenerateCodeHandler
     public function __invoke(GenerateCodeInput $input): void
     {
         [$code, $hash] = $this->codeGeneratorService->generateRandomCodeWithHash();
-        $codeEntity = $this->repository->generate(login: $input->email, hash: $hash);
+        $codeEntity = $this->repository->generate(login: $input->email, secretCode: $hash);
 
         $email = (new Email())
             ->to($codeEntity->getLogin())

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Authentication;
 
+use App\Entity\Enum\EmailChangeRequestStatus;
 use App\Entity\Traits\WithTimestamps;
 use App\Entity\Traits\WithUuid;
 use App\Repository\Authentication\EmailChangeRequestRepository;
@@ -18,16 +19,12 @@ class EmailChangeRequest
 {
     use WithUuid, WithTimestamps;
 
-    public const string STATUS_PENDING = 'penging';
-    public const string STATUS_CONFIRMED = 'confirmed';
-    public const string STATUS_CANCELLED = 'cancelled';
-
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column(length: 255, enumType: EmailChangeRequestStatus::class)]
+    private ?EmailChangeRequestStatus $status = null;
 
     #[ORM\Column(length: 255)]
     private ?string $oldEmail = null;
@@ -36,10 +33,10 @@ class EmailChangeRequest
     private ?string $newEmail = null;
 
     #[ORM\Column(length: 128)]
-    private ?string $oldEmailHash = null;
+    private ?string $oldEmailSecretCode = null;
 
     #[ORM\Column(length: 128)]
-    private ?string $newEmailHash = null;
+    private ?string $newEmailSecretCode = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?CarbonInterface $expiredAt = null;
@@ -56,12 +53,12 @@ class EmailChangeRequest
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?EmailChangeRequestStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(EmailChangeRequestStatus $status): static
     {
         $this->status = $status;
         return $this;
@@ -89,25 +86,25 @@ class EmailChangeRequest
         return $this;
     }
 
-    public function getOldEmailHash(): ?string
+    public function getOldEmailSecretCode(): ?string
     {
-        return $this->oldEmailHash;
+        return $this->oldEmailSecretCode;
     }
 
-    public function setOldEmailHash(string $oldEmailHash): static
+    public function setOldEmailSecretCode(?string $oldEmailSecretCode): static
     {
-        $this->oldEmailHash = $oldEmailHash;
+        $this->oldEmailSecretCode = $oldEmailSecretCode;
         return $this;
     }
 
-    public function getNewEmailHash(): ?string
+    public function getNewEmailSecretCode(): ?string
     {
-        return $this->newEmailHash;
+        return $this->newEmailSecretCode;
     }
 
-    public function setNewEmailHash(string $newEmailHash): static
+    public function setNewEmailSecretCode(?string $newEmailSecretCode): static
     {
-        $this->newEmailHash = $newEmailHash;
+        $this->newEmailSecretCode = $newEmailSecretCode;
         return $this;
     }
 
