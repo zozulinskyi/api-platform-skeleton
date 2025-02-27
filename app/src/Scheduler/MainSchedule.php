@@ -20,10 +20,9 @@ final readonly class MainSchedule implements ScheduleProviderInterface
 
     public function getSchedule(): Schedule
     {
-        dd($this->cacheSchedulerDefault);
         return (new Schedule())
             ->lock(lock: $this->lockFactory->createLock(resource: 'schedule-default-lock'))
-            ->stateful(state: $this->cache)
+            ->stateful(state: $this->cacheSchedulerDefault)
             ->processOnlyLastMissedRun(onlyLastMissed: true);
     }
 }
