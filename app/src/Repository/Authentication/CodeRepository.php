@@ -36,12 +36,21 @@ final class CodeRepository extends ServiceEntityRepository
         return $entity;
     }
 
-    public function clearByLogin(string $login): void
+    public function deleteUserCodes(string $login): void
     {
         $this->createQueryBuilder(alias: 'c')
             ->delete()
             ->where(predicates: 'c.login = :login')
             ->setParameter(key: 'login', value: $login)
+            ->getQuery()
+            ->execute();
+    }
+
+    public function deleteOverdueCodes(): void
+    {
+        $this->createQueryBuilder(alias: 'c')
+            ->delete()
+            ->where(predicates: "c.expiredAt < DATE_SUB(NOW(), 1, 'HOUR')")
             ->getQuery()
             ->execute();
     }

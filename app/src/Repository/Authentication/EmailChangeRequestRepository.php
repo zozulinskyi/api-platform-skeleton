@@ -42,4 +42,17 @@ final class EmailChangeRequestRepository extends ServiceEntityRepository
 
         return $entity;
     }
+
+    public function cancelOverdueRequests(): void
+    {
+        $this->createQueryBuilder(alias: 'r')
+            ->update()
+            ->set(key: 'r.status', value: ':cancelled')
+            ->where(predicates: 'r.status != :pending')
+            ->andWhere("r.expiredAt < DATE_SUB(NOW(), 1, 'DAY')")
+            ->setParameter(key: 'pending', value: EmailChangeRequestStatus::PENDING)
+            ->setParameter(key: 'cancelled', value: EmailChangeRequestStatus::CANCELLED)
+            ->getQuery()
+            ->execute();
+    }
 }

@@ -16,5 +16,7 @@ framework:
 
     # Namespaced pools use the above "app" backend by default
     pools:
+      cache.scheduler.default:
+        adapter: cache.adapter.filesystem
       cache.rate_limiter.authentication:
         adapter: cache.adapter.filesystem
