@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
             ),
             input: GenerateCodeInput::class,
             output: false,
-            messenger: 'input',
             processor: GenerateCodeProcessor::class,
         ),
         new Post(

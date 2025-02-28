@@ -13,8 +13,9 @@ use App\Repository\Authentication\UserRepository;
 use App\Services\Authentication\CodeGeneratorService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 
 /**
  * @implements ProcessorInterface<ChangeEmailInput, ChangeEmailOutput>
@@ -24,7 +25,7 @@ final readonly class ChangeEmailProcessor implements ProcessorInterface
     public function __construct(
         private Security $security,
         private UserRepository $userRepository,
-        private MailerInterface $mailer,
+        private NotifierInterface $notifier,
         private CodeGeneratorService $codeGeneratorService,
         private EmailChangeRequestRepository $emailChangeRequestRepository,
     )
@@ -56,18 +57,23 @@ final readonly class ChangeEmailProcessor implements ProcessorInterface
         );
 
         // generate and send emails
-        $firstEmail = (new Email())
-            ->to($user->getEmail())
-            ->text(sprintf('You create a request to change your email address to %s. To confirm this action, enter the next code: %s', $data->newEmail, $oldEmailCode))
-            ->subject('Change Email Address');
+        $firstNotification = (new Notification(subject: 'Change Email Address'))
+            ->content(content: sprintf('You create a request to change your email address to %s. To confirm this action, enter the next code: %s', $data->newEmail, $oldEmailCode))
+            ->importance(importance: Notification::IMPORTANCE_URGENT);
 
-        $secondEmail = (new Email())
-            ->to($data->newEmail)
-            ->text(sprintf('To use this email, enter the next code: %s', $newEmailCode))
-            ->subject('Confirm your Email');
+        $this->notifier->send(
+            notification: $firstNotification,
+            recipients: new Recipient(email: $user->getEmail()),
+        );
 
-        $this->mailer->send(message: $firstEmail);
-        $this->mailer->send(message: $secondEmail);
+        $secondNotification = (new Notification(subject: 'Confirm your Email'))
+            ->content(content: sprintf('To use this email, enter the next code: %s', $newEmailCode))
+            ->importance(importance: Notification::IMPORTANCE_HIGH);
+
+        $this->notifier->send(
+            notification: $secondNotification,
+            recipients: new Recipient(email: $data->newEmail),
+        );
 
         // generate and send response
         return new ChangeEmailOutput(id: $changeEmailRequest->getId()->toString());

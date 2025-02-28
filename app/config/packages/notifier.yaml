@@ -1,0 +1,12 @@
+framework:
+  notifier:
+    channel_policy:
+      low: ['email']
+      high: ['email']
+      medium: ['email']
+      urgent: ['email']
+    admin_recipients:
+      - { email: admin@example.com }
+    texter_transports:
+    chatter_transports:
+
