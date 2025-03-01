@@ -46,7 +46,7 @@ final class CollectionNormalizer extends AbstractCollectionNormalizer
         $transformTo = $context['output']['class'] ?? $context['resource_class'];
 
         foreach ($object as $obj) {
-            $transformedObject = ($transformTo && $transformTo !== get_class($obj))
+            $transformedObject = ($transformTo && is_object($obj) && $transformTo !== get_class($obj))
                 ? $this->mapper->map(source: $obj, target: $transformTo, context: $context)
                 : $obj;
 
