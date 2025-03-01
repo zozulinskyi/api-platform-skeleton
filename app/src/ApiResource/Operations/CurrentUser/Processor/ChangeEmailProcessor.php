@@ -7,15 +7,15 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\Operations\CurrentUser\Input\ChangeEmailInput;
 use App\ApiResource\Operations\CurrentUser\Output\ChangeEmailOutput;
+use App\Component\Notifier\Notification;
+use App\Component\Notifier\Recipient;
 use App\Entity\Authentication\User;
 use App\Repository\Authentication\EmailChangeRequestRepository;
 use App\Repository\Authentication\UserRepository;
 use App\Services\Authentication\CodeGeneratorService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
-use Symfony\Component\Notifier\Recipient\Recipient;
 
 /**
  * @implements ProcessorInterface<ChangeEmailInput, ChangeEmailOutput>
@@ -61,19 +61,12 @@ final readonly class ChangeEmailProcessor implements ProcessorInterface
             ->content(content: sprintf('You create a request to change your email address to %s. To confirm this action, enter the next code: %s', $data->newEmail, $oldEmailCode))
             ->importance(importance: Notification::IMPORTANCE_URGENT);
 
-        $this->notifier->send(
-            notification: $firstNotification,
-            recipients: new Recipient(email: $user->getEmail()),
-        );
-
         $secondNotification = (new Notification(subject: 'Confirm your Email'))
             ->content(content: sprintf('To use this email, enter the next code: %s', $newEmailCode))
             ->importance(importance: Notification::IMPORTANCE_HIGH);
 
-        $this->notifier->send(
-            notification: $secondNotification,
-            recipients: new Recipient(email: $data->newEmail),
-        );
+        $this->notifier->send($firstNotification, new Recipient(email: $user->getEmail()));
+        $this->notifier->send($secondNotification, new Recipient(email: $data->newEmail));
 
         // generate and send response
         return new ChangeEmailOutput(id: $changeEmailRequest->getId()->toString());
