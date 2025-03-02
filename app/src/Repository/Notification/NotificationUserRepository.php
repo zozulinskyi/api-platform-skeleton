@@ -6,6 +6,7 @@ namespace App\Repository\Notification;
 use App\Entity\Authentication\User;
 use App\Entity\Notification\Notification;
 use App\Entity\Notification\NotificationUser;
+use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -29,6 +30,17 @@ class NotificationUserRepository extends ServiceEntityRepository
                 ->setUser(user: $user);
 
             $this->getEntityManager()->persist($entity);
+        }
+
+        return $entity;
+    }
+
+    public function assignAndRead(Notification $notification, User $user): NotificationUser
+    {
+        $entity = $this->assign($notification, $user);
+
+        if (is_null($entity->getReadAt())) {
+            $entity->setReadAt(readAt: Carbon::now());
         }
 
         return $entity;

@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
 use App\ApiResource\Operations\Notification\Output\NotificationOutput;
+use App\ApiResource\Operations\Notification\Processor\NotificationReadProcessor;
 use App\ApiResource\Operations\Notification\Provider\NotificationCountProvider;
 use App\ApiResource\Operations\Notification\Provider\NotificationListProvider;
 use App\ApiResource\Output\CountOutput;
@@ -32,6 +33,10 @@ use App\ApiResource\Output\CountOutput;
                 summary: 'Mark all notifications as read',
                 description: 'Method allow to mark all user notification as read',
             ),
+            input: false,
+            output: false,
+            read: false,
+            processor: NotificationReadProcessor::class,
         ),
         new Patch(
             uriTemplate: '/{id}/read',
@@ -39,6 +44,10 @@ use App\ApiResource\Output\CountOutput;
                 summary: 'Mark notification as read',
                 description: 'Method allow to mark selected notification as read',
             ),
+            input: false,
+            output: false,
+            read: false,
+            processor: NotificationReadProcessor::class,
         ),
         new GetCollection(
             uriTemplate: '/all',

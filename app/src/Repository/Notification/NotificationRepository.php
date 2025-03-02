@@ -63,6 +63,30 @@ class NotificationRepository extends ServiceEntityRepository
         return (int)$queryBuilder->getQuery()->getSingleScalarResult();
     }
 
+    public function getSingleUserNotification(User $user, string $notificationId): ?Notification
+    {
+        $queryBuilder = $this->getUserNotificationsQueryBuilder(user: $user, onlyUnread: false);
+
+        $queryBuilder->select(select: 'n');
+        $queryBuilder->andWhere('n.id = :notificationId');
+        $queryBuilder->setParameter(key: 'notificationId', value: $notificationId);
+        $queryBuilder->setMaxResults(maxResults: 1);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @return array<Notification>
+     */
+    public function getAllUnreadUserNotifications(User $user): array
+    {
+        $queryBuilder = $this->getUserNotificationsQueryBuilder(user: $user, onlyUnread: true);
+
+        $queryBuilder->select(select: 'n');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     private function getUserNotificationsQueryBuilder(User $user, bool $onlyUnread): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder(alias: 'n')
